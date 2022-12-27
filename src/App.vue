@@ -1,30 +1,74 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <div class="container pt-1">
+    <the-header></the-header>
+    <div class="card">
+      <h2>Актуальные новости: {{ now }}</h2>
+      <span>открыто: {{ openRate }} | прочитано: {{ readRate}}</span>
+    </div>
+    <app-news
+      v-for="item in news"
+      :key="item.id"
+      :title="item.title"
+      :id="item.id"
+      :is-open="item.isOpen"
+      :is-read="item.isRead"
+      @open-news="openRate++"
+      @read-news="readNews"
+      @mark-unread="markUnread"
+      >
+      </app-news>
   </div>
-  <router-view/>
 </template>
 
+<script>
+import AppNews from "./AppNews.vue";
+
+export default {
+   provide() {
+    return {
+      title: "Список всех новостей",
+      news: this.news
+    }
+  },
+  data() {
+    return {
+    openRate: 0,
+    readRate: 0,
+     now: new Date().toLocaleDateString(),
+     news: [
+      {
+        title: "Queen Victoria is coming to Batumi",
+        id: 1,
+        isOpen: false,
+        isRead: false,
+      },
+      {
+        title: "This summer will be warm and chilling across all Georgia",
+        id: 2,
+        sOpen: false,
+        isRead: false,
+      }
+     ]
+    }
+  },
+  methods: {
+    readNews(id) {
+      const index = this.news.findIndex(it => it.id === id)
+      this.news[index].isRead = true
+      this.readRate++
+    },
+    markUnread(id) {
+      const news = this.news.find(it => it.id === id)
+      news.isRead = false
+      this.readRate--
+    }
+  },
+  components: {
+    'app-news': AppNews
+  },
+}
+</script>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>
