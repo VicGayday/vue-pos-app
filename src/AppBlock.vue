@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <slot name="header"></slot>
-    <slot>
+    <slot name="default">
       Slot is empty
     </slot>
     <slot name="footer"></slot>
