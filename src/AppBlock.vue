@@ -1,6 +1,10 @@
 <template>
   <div class="card">
-    <h3>Titlee</h3>
+    <slot name="header"></slot>
+    <slot>
+      Slot is empty
+    </slot>
+    <slot name="footer"></slot>
   </div>
 </template>
 
