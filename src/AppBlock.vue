@@ -9,11 +9,13 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, onMounted } from 'vue'
 
 export default defineComponent({
-  setup() {
-
+  setup(context) {
+onMounted(() => {
+  console.log(context.slots);
+})
   },
 })
 </script>
