@@ -1,36 +1,38 @@
 <template>
   <div class="container pt-1">
     <div class="card">
-      <h2>Slots</h2>
-
-      <app-list>
-        <template #default="{iter, idx}">
-        <strong>{{ idx + 1 }}</strong>
-      <span> Item: {{ iter }}</span></template>
-      </app-list>
-      <app-block>
-
-<template v-slot:header>
-  This is header
-</template>
-<p>This is main slot content</p>
-      </app-block>
+      <h2>Dynamic components</h2>
+      <button :class="active === 'one' ? 'active' : ''" @click="active = 'one'">One</button>
+      <button :class="active === 'two' ? 'active' : ''" @click="active = 'two'">Two</button>
+      <component :is="activeComponent"></component>
     </div>
   </div>
 </template>
 <script>
-import { defineComponent } from 'vue'
-import  AppBlock from './AppBlock.vue'
-import AppList from './AppList.vue'
+import { defineComponent, ref, computed } from 'vue'
+import AppTextOne from './AppTextOne.vue';
+import AppTextTwo from './AppTextTwo.vue'
 export default defineComponent({
-  components: { AppBlock, AppList },
+  components: { AppTextOne, AppTextTwo },
   setup() {
-
+  let active = ref('one');
+  const activeComponent = computed(() => {
+    // if (active.value === 'one') {
+    //   return "app-text-one"
+    // }
+    // else if (active.value === 'two') {
+    //   return "app-text-two"
+    // }
+    return `app-text-${active.value}`
+  });
+  return { active, activeComponent }
   },
 })
 </script>
 
 <style scoped>
-
+.active {
+  background-color: green;
+}
 </style>
 
