@@ -4,7 +4,9 @@
       <h2>Dynamic components</h2>
       <button :class="active === 'one' ? 'active' : ''" @click="active = 'one'">One</button>
       <button :class="active === 'two' ? 'active' : ''" @click="active = 'two'">Two</button>
+      <keep-alive>
       <component :is="activeComponent"></component>
+      </keep-alive>
     </div>
   </div>
 </template>
