@@ -1,5 +1,6 @@
 <template>
   <div class="container pt-1">
+    <async-component></async-component>
     <div class="card">
       <h2>Dynamic components</h2>
       <button :class="active === 'one' ? 'active' : ''" @click="active = 'one'">One</button>
