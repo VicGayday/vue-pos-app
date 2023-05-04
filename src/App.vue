@@ -43,27 +43,25 @@ export default defineComponent({
   <div class="container">
     <form class="card" @submit.prevent="submitForm">
       <h1>Анкета на Vue разработчика!</h1>
-      <div class="form-control">
-        <label for="name">Как тебя зовут?</label>
-        <input
-        type="text"
-        id="name"
+
+      <app-input
         placeholder="Введи имя"
-        v-model.trim="inputName"
-        >
-      </div>
+        :error="state.errors.name"
+        label="Как тебя зовут?"
+        v-model="state.inputName"
+      ></app-input>
 
       <div class="form-control">
         <label for="age">Выбери возраст</label>
         <input
         type="number"
         id="age"
-        v-model="age">
+        v-model.number="state.age">
       </div>
 
       <div class="form-control">
         <label for="city">Твой город</label>
-        <select id="city">
+        <select id="city" v-model="state.city">
           <option value="spb">Санкт-Петербург</option>
           <option value="msk">Москва</option>
           <option value="kzn">Казань</option>
@@ -74,24 +72,31 @@ export default defineComponent({
       <div class="form-checkbox">
         <span class="label">Готов к переезду в Токио?</span>
         <div class="checkbox">
-          <label><input type="radio" name="trip"/> Да</label>
+          <label><input type="radio" v-model="state.relocate" name="trip" value="Yes"/> Да</label>
         </div>
 
         <div class="checkbox">
-          <label><input type="radio" name="trip"/> Нет</label>
+          <label><input type="radio" v-model="state.relocate" name="trip" value="No"/> Нет</label>
         </div>
       </div>
 
       <div class="form-checkbox">
         <span class="label">Что знаешь во Vue?</span>
         <div class="checkbox">
-          <label><input type="checkbox"/> Vuex</label>
+          <label><input type="checkbox" v-model="state.vueSkills" value="Vuex" name="skills"/> Vuex</label>
         </div>
         <div class="checkbox">
-          <label><input type="checkbox"/> Vue CLI</label>
+          <label><input type="checkbox" v-model="state.vueSkills" value="Vue CLI" name="skills"/> Vue CLI</label>
         </div>
         <div class="checkbox">
-          <label><input type="checkbox"/> Vue Router</label>
+          <label><input type="checkbox" v-model="state.vueSkills" value="Vue Router" name="skills"/> Vue Router</label>
+        </div>
+      </div>
+
+      <div class="form-checkbox">
+        <span class="label">Примите условия использования сервиса</span>
+        <div class="checkbox">
+          <label><input type="checkbox" v-model="state.usageConditions"/> С правилами использования сервиса согласен</label>
         </div>
       </div>
 
@@ -101,28 +106,78 @@ export default defineComponent({
 </template>
 
 <script>
-import { defineComponent, ref} from 'vue'
+import { defineComponent, reactive} from 'vue';
+import AppInput from './AppInput.vue';
  export default defineComponent({
+  components: {
+    AppInput,
+  },
   setup() {
-    const inputName = ref("")
-      const age = ref(23)
-      // city: 'nsk',
-      // trip: '',
-      // vueSkills: [],
+    const state = reactive({
+      inputName: "",
+      age: 23,
+      city: 'nsk',
+      relocate: null,
+      vueSkills: [],
+      usageConditions: false,
+      errors: {
+        name: null
+      }
+    })
+    // const inputName = ref("")
+    //   const age = ref(23)
+    //   const city = ref('nsk');
+    //   const relocate = ref(null);
+    //   const vueSkills = ref([]);
+    //   const usageConditions = ref(false)
+
+  function formIsValid() {
+    let isValid = true;
+    if (state.inputName.length === 0) {
+      state.errors.name = "Имя не может быть пустым"
+      isValid = false;
+    }
+    else {
+      state.errors.name = null;
+    }
+    return isValid
+  }
 
 
   function submitForm() {
+    if (formIsValid()) {
     console.group("Form data")
-    console.log("name", inputName.value);
-    console.log("age", age.value);
+    console.log("name", state.inputName);
+    console.log("age", state.age);
+    console.log("city", state.city);
+    console.log("relocate", state.relocate);
+    console.log("vueskills", state.vueSkills);
+    console.log("agreement", state.usageConditions);
     console.groupEnd()
+    }
   }
 
-  return {submitForm, age, inputName}
+  return {
+    submitForm,
+    formIsValid,
+    // age,
+    // inputName,
+    // city,
+    // relocate,
+    // vueSkills,
+    // usageConditions,
+    state,
+  }
 }
   })
 </script>
 
 <style>
+.form-control small {
+  color: red;
+}
 
+.form-control.invalid input {
+  border-color: red;
+}
 </style>
