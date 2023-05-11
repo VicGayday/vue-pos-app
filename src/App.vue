@@ -160,12 +160,6 @@ import AppInput from './AppInput.vue';
   return {
     submitForm,
     formIsValid,
-    // age,
-    // inputName,
-    // city,
-    // relocate,
-    // vueSkills,
-    // usageConditions,
     state,
   }
 }
