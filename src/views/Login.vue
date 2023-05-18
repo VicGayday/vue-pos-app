@@ -19,27 +19,33 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed } from 'vue';
+import { defineComponent, ref, computed, inject } from 'vue';
 export default defineComponent({
   setup() {
    const email = ref("");
    const password = ref("");
+   const injectedLogin = inject('login')
 
    const isValid = computed(() => {
-    return email !== '' && password !== ''
+    return email.value !== '' && password.value !== ''
    })
 
    function submit() {
-     if (isValid) {
-        // login
+     if (isValid.value) {
+        injectedLogin()
+      }
+      else {
+        console.log("User name or password required");
       }
    }
+
 
    return {
     email,
     password,
     isValid,
     submit,
+    injectedLogin
    }
   }
 })
