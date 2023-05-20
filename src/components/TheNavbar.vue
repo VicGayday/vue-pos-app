@@ -1,12 +1,12 @@
 <template>
-  <header class="navbar" v-if="isVisible">
+  <header class="navbar">
     <h3>GMail</h3>
     <ul class="navbar-menu">
-      <li><router-link to="/dashboard">Главная</router-link></li>
+      <li><router-link to="/dashboard">Main</router-link></li>
       <li>
-        <a custom to="/mail">Почта</a>
+        <router-link to="/mail" custom v-slot="{ navigate, href}"><a href="#" click="navigate" :class="{'active': $route.path.indexOf(href) !== -1}">Mail</a></router-link>
       </li>
-      <li><router-link to="#" @click.prevent="injectedLogin">Выйти</router-link></li>
+      <li><router-link to="#" @click.prevent="injectedLogin">Log out</router-link></li>
     </ul>
   </header>
 </template>

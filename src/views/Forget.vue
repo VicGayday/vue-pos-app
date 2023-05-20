@@ -8,11 +8,15 @@
 
 <script>
 import { defineComponent } from 'vue';
+import { useRouter } from 'vue-router';
 export default defineComponent({
   name: "Forget",
   setup() {
+
+    const router = useRouter();
+
     function goToLoginPage() {
-      this.$router.push("/login")
+      router.push("/login")
     }
 
     return {

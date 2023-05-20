@@ -10,7 +10,7 @@
 <script>
 import { defineComponent, provide, ref } from "vue";
 import TheNavbar from "@/components/TheNavbar.vue";
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 
 export default defineComponent({
   name: "App",
@@ -20,6 +20,7 @@ export default defineComponent({
   setup() {
 
     const router = useRouter();
+    const route = useRoute();
     const emails = [
       {id: "1", theme: "Bought a PC"},
       {id: "2", theme: "Learned Vue router"},
@@ -31,13 +32,21 @@ export default defineComponent({
 
     const login = () => {
       isAuth.value = true
-      console.log("isAuth", isAuth.value);
-      router.push('/dashboard')
+      if (route.query.from) {
+        router.push(route.query.from)
+      } else {
+        router.push('/dashboard')
+      }
     }
 
     const logout = () => {
       isAuth.value = false
-      router.push('/login')
+      router.push({
+        path: ('/login'),
+        query: {
+          from: route.path
+        }
+      })
     }
 
     provide('emails', emails)

@@ -2,29 +2,42 @@
   <div class="card no-padding">
     <div class="card-nav">
       <ul class="list">
-        <li class="list-item" v-for="email in emails" :key="email.id">
-          <a href="#">
+        <li class="list-item" v-for="email in injectedMails" :key="email.id">
+          <router-link :to="`/mail/${email.id}`">
             {{email.theme}}
-          </a>
+          </router-link>
         </li>
       </ul>
     </div>
     <div class="card-body">
-      <app-email-body></app-email-body>
+      <router-view></router-view>
     </div>
   </div>
 </template>
 
 <script>
-import AppEmailBody from '../components/AppEmailBody'
+import { defineComponent, inject, watch } from 'vue';
+import { useRoute } from 'vue-router';
 
-export default {
-  // components: {AppEmailBody},
+export default defineComponent({
   inject: ['emails'],
-  components: {
-    AppEmailBody
+  setup() {
+    const injectedMails = inject('emails');
+    const route = useRoute();
+
+    watch(() => route.params.mailId, () => {
+      const mailId = route.params.mailId;
+      // Update injectedMails with the selected email as active
+      injectedMails.forEach((email) => {
+        email.isActive = email.id === mailId;
+      });
+    });
+
+    return {
+      injectedMails
+    }
   }
-}
+})
 </script>
 
 <style scoped>
