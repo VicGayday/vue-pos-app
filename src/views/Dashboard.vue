@@ -9,7 +9,20 @@
 </template>
 
 <script>
+import { nextTick } from 'vue';
+
 export default {
+  beforeRouteEnter() {
+    console.log("beforeRourerEnter");
+  },
+  beforeRouteLeave(to, from, next) {
+    const answer = confirm('Are you sure to leave?')
+    if (answer) {
+      next()
+    } else {
+      next(false)
+    }
+  }
 }
 </script>
 
