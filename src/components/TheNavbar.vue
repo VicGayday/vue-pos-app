@@ -1,6 +1,7 @@
 <template>
   <header class="navbar">
     <h3>GMail</h3>
+    <p>{{  $store.getters.getCounter }}</p>
     <ul class="navbar-menu">
       <li><router-link to="/dashboard">Main</router-link></li>
       <li>
