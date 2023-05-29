@@ -1,6 +1,6 @@
 <template>
   <form class="card" @submit.prevent="submit">
-    <h2>Мини клон Gmail</h2>
+    <h2>{{ appTitle }}</h2>
     <div class="form-control">
       <label for="email">Email</label>
       <input type="text" id="email" v-model.trim="email">
@@ -17,7 +17,7 @@
     </router-link>
   </form>
   <div class="card">
-    {{ $store.getters.getCounter }}
+    {{ counter }}
     <button class="btn primary" @click="increment">Add</button>
     <button class="btn danger" @click="addAsync">Add 10</button>
   </div>
@@ -31,6 +31,13 @@ export default defineComponent({
    const email = ref("");
    const password = ref("");
    const injectedLogin = inject('login')
+   const counter = computed(() => {
+     return store.getters.counter
+   })
+
+   const appTitle = computed(() => {
+    return store.getters.uppercaseTitle
+   })
 
    const increment = () => {
     store.commit('add', {
@@ -63,11 +70,13 @@ export default defineComponent({
    return {
     email,
     password,
+    counter,
     isValid,
     submit,
     injectedLogin,
     increment,
-    addAsync
+    addAsync,
+    appTitle,
    }
   }
 })
